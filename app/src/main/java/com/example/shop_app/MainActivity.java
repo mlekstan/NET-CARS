@@ -10,8 +10,12 @@ import android.animation.ValueAnimator;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnticipateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
@@ -25,8 +29,51 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private static void makeAnimation(View animatedViewObject, long duration) {
+        final ValueAnimator fadeOutAnimator = ValueAnimator.ofFloat(1f, 0f);
+        fadeOutAnimator.setDuration(duration);
+        fadeOutAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                animatedViewObject.setAlpha(alpha);
+            }
+        });
+
+
+        final ValueAnimator fadeInAnimator = ValueAnimator.ofFloat(0f, 1f);
+        fadeInAnimator.setDuration(duration);
+        fadeInAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                animatedViewObject.setAlpha(alpha);
+            }
+        });
+
+
+        fadeOutAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                fadeInAnimator.start();
+            }
+        });
+
+        fadeInAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                fadeOutAnimator.start();
+            }
+        });
+
+        fadeOutAnimator.start();
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
@@ -36,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         splashScreen.setKeepOnScreenCondition(() -> {
             try {
-                Thread.sleep(0);
+                Thread.sleep(800);
                 return false;
             } catch (Exception e) {
                 return false;
@@ -49,81 +96,51 @@ public class MainActivity extends AppCompatActivity {
             Instant startTime = Instant.now();
             long endTime = 2;
 
-            while((Duration.between(startTime,Instant.now())).getSeconds() < endTime){}
+            while((Duration.between(startTime,Instant.now())).getSeconds() < endTime){} // pojebane ale niech zostanie na pamiatkę - też działa ;)
             return false;
         });
 
         */
 
         splashScreen.setOnExitAnimationListener(splashScreenViewProvider -> {
-            ObjectAnimator endScreenAnimation = ObjectAnimator.ofFloat(splashScreenViewProvider.getView(), "alpha", 1f, 0f);
-            endScreenAnimation.setDuration(500);
+            ObjectAnimator endScreenAnimation = ObjectAnimator.ofFloat(splashScreenViewProvider.getView(), "alpha", 1.0f, 0.0f);
+            endScreenAnimation.setDuration(1000);
 
 
-            ValueAnimator firstEndAnimation = ValueAnimator.ofFloat(1f,0f);
+            ValueAnimator firstEndAnimation = ValueAnimator.ofFloat(1.0f, 0.0f);
             firstEndAnimation.setDuration(500);
+            firstEndAnimation.setInterpolator(new AnticipateOvershootInterpolator());
 
             firstEndAnimation.addUpdateListener(anim -> {
-                splashScreenViewProvider.getIconView().setAlpha((Float) firstEndAnimation.getAnimatedValue());
+                splashScreenViewProvider.getIconView().setScaleX((Float) firstEndAnimation.getAnimatedValue());
             });
 
 
-            ValueAnimator secondEndAnimation = ValueAnimator.ofFloat(1f,0.0f);
+            ValueAnimator secondEndAnimation = ValueAnimator.ofFloat(1.0f, 0.0f);
             secondEndAnimation.setDuration(500);
-            secondEndAnimation.setInterpolator(new OvershootInterpolator());
+            secondEndAnimation.setInterpolator(new AnticipateOvershootInterpolator());
 
             secondEndAnimation.addUpdateListener(anim -> {
-                splashScreenViewProvider.getIconView().setScaleX((Float) secondEndAnimation.getAnimatedValue());
+                splashScreenViewProvider.getIconView().setScaleY((Float) secondEndAnimation.getAnimatedValue());
             });
-
-
-            ValueAnimator thirdEndAnimation = ValueAnimator.ofFloat(1f,0.0f);
-            thirdEndAnimation.setDuration(500);
-            thirdEndAnimation.setInterpolator(new OvershootInterpolator());
-
-            thirdEndAnimation.addUpdateListener(anim -> {
-                splashScreenViewProvider.getIconView().setScaleY((Float) thirdEndAnimation.getAnimatedValue());
-            });
-
 
 
             AnimatorSet endAnimations = new AnimatorSet();
-            /*
+            endAnimations.play(firstEndAnimation).with(secondEndAnimation);
+
             endAnimations.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     splashScreenViewProvider.remove();
                 }
             });
-            */
 
-            endAnimations.play(firstEndAnimation).with(secondEndAnimation);
-            endAnimations.play(firstEndAnimation).with(thirdEndAnimation);
-            endAnimations.play(secondEndAnimation).with(thirdEndAnimation);
-            //endAnimations.play(endScreenAnimation).after(thirdEndAnimation);
+
             endAnimations.start();
             endScreenAnimation.start();
         });
 
 
-        /*
-        splashScreen.setOnExitAnimationListener(splashScreenViewProvider -> {
-            final ObjectAnimator slideUp = ObjectAnimator.ofFloat(splashScreenViewProvider.getView(),(View.ALPHA), 1f, 0f);
-            slideUp.setInterpolator(new AnticipateInterpolator());
-            slideUp.setDuration(200L);
-
-            // Call SplashScreenView.remove at the end of your custom animation.
-            slideUp.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    splashScreenViewProvider.remove();
-                }
-            });
-
-            // Run your animation.
-            slideUp.start();
-        });
-        */
 
         EdgeToEdge.enable(this);
 
@@ -133,5 +150,21 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        final View orangeCircle = findViewById(R.id.first_orange_circle);
+        final View lightBlueCircle = findViewById(R.id.first_light_blue_circle);
+        final View blueCircle = findViewById(R.id.first_blue_circle);
+        final View redCircle = findViewById(R.id.first_red_circle);
+
+        makeAnimation(orangeCircle,5000);
+        makeAnimation(lightBlueCircle, 5500);
+        makeAnimation(blueCircle,6000);
+        makeAnimation(redCircle,6500);
+
+        
+
+
+
     }
 }
