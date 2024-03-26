@@ -31,6 +31,7 @@
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/search"
+        android:background="@color/logoLightBlue"
         app:layout_constraintStart_toStartOf="@id/guidelineVert1"
         app:layout_constraintEnd_toEndOf="@id/guidelineVert2"
         app:layout_constraintTop_toTopOf="@id/guidelineHor1" />
@@ -40,6 +41,7 @@
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/menu"
+        android:background="@color/logoLightBlue"
         app:layout_constraintStart_toStartOf="@id/guidelineVert7"
         app:layout_constraintEnd_toEndOf="@id/guidelineVert8"
         app:layout_constraintTop_toTopOf="@id/guidelineHor1" />
@@ -50,6 +52,7 @@
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/logo_w_png_1"
+        android:background="@color/logoLightBlue"
         app:layout_constraintStart_toStartOf="@id/guidelineVert1"
         app:layout_constraintEnd_toEndOf="@id/guidelineVert2"
         app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
@@ -59,6 +62,7 @@
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/basket"
+        android:background="@color/logoLightBlue"
         app:layout_constraintStart_toStartOf="@id/guidelineVert3"
         app:layout_constraintEnd_toEndOf="@id/guidelineVert4"
         app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
@@ -67,23 +71,18 @@
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/heart"
+        android:background="@color/logoLightBlue"
         app:layout_constraintStart_toStartOf="@id/guidelineVert5"
         app:layout_constraintEnd_toEndOf="@id/guidelineVert6"
         app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/user"
-        app:layout_constraintStart_toStartOf="@id/guidelineVert7"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVert8"
-        app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
+
 
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/user"
+        android:background="@color/logoLightBlue"
         app:layout_constraintStart_toStartOf="@id/guidelineVert7"
         app:layout_constraintEnd_toEndOf="@id/guidelineVert8"
         app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
