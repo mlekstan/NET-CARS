@@ -27,11 +27,21 @@ import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.util.Log;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.content.Intent;
+
+
+
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private Button button1;
+
     private static void makeAnimation(View animatedViewObject, long duration) {
         final ValueAnimator fadeOutAnimator = ValueAnimator.ofFloat(1f, 0f);
         fadeOutAnimator.setDuration(duration);
@@ -80,6 +90,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        button1 = findViewById(R.id.buttonNextActivity);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                startActivity(intent);
+
+            }
+        });
+
+
 
         splashScreen.setKeepOnScreenCondition(() -> {
             try {
@@ -89,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
 
         /*
 
@@ -144,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
         EdgeToEdge.enable(this);
 
-        setContentView(R.layout.activity_main);
+        
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -162,9 +187,13 @@ public class MainActivity extends AppCompatActivity {
         makeAnimation(blueCircle,6000);
         makeAnimation(redCircle,6500);
 
-        
+
 
 
 
     }
+
+
 }
+
+

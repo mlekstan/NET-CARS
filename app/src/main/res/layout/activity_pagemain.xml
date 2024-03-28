@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+
+
+
+
     <View
         android:id="@+id/bottomBar"
         android:layout_width="0dp"
@@ -26,7 +31,41 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/guidelineHor2"/>
 
-    <ImageView
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Nested ConstraintLayout for ScrollView contents -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/scrollableContentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Place your scrollable content inside this ConstraintLayout -->
+            <!-- Things you want to be scrollable -->
+
+            <!-- For example, you can add views and set constraints within this ConstraintLayout -->
+
+            <TextView
+                android:id="@+id/textViewScrollable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scrollable Content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="18sp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/buttonSearch"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -36,7 +75,9 @@
         app:layout_constraintEnd_toEndOf="@id/guidelineVert2"
         app:layout_constraintTop_toTopOf="@id/guidelineHor1" />
 
-    <ImageView
+
+    <ImageButton
+        android:id="@+id/buttonMenu"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -47,7 +88,8 @@
         app:layout_constraintTop_toTopOf="@id/guidelineHor1" />
 
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/buttonLogo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -57,7 +99,8 @@
         app:layout_constraintEnd_toEndOf="@id/guidelineVert2"
         app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/buttonBasket"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -66,7 +109,9 @@
         app:layout_constraintStart_toStartOf="@id/guidelineVert3"
         app:layout_constraintEnd_toEndOf="@id/guidelineVert4"
         app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
-    <ImageView
+
+    <ImageButton
+        android:id="@+id/buttonHeart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -77,7 +122,8 @@
         app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
 
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/buttonUser"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
