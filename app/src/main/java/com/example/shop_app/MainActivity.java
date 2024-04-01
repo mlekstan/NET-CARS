@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                Intent intent = new Intent(MainActivity.this, MainPageActivity.class);
                 startActivity(intent);
 
             }
@@ -161,8 +161,9 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
-            endAnimations.start();
+
             endScreenAnimation.start();
+            endAnimations.start();
         });
 
 

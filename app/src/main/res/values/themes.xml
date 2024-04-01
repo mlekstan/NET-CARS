@@ -10,7 +10,6 @@
     </style>
     
     <style name="Theme.Shop_app" parent="Base.Theme.Shop_app" >
-
     </style>
 
     <style name="Theme.AnimatedSplash.MySplash" parent="Theme.SplashScreen">
@@ -20,6 +19,7 @@
         <item name="postSplashScreenTheme">@style/Base.Theme.Shop_app</item>
     </style>
 
-
+    <style name="AppTheme.MainPage" parent="Theme.AppCompat.Light">
+    </style>
 
 </resources>

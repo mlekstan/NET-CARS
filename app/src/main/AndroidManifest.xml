@@ -28,7 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainPageActivity" />
+        <activity
+            android:name=".MainPageActivity"
+            android:theme="@style/AppTheme.MainPage">
+        </activity>
     </application>
 
 </manifest>
