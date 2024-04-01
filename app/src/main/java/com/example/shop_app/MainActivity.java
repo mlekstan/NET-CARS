@@ -32,9 +32,10 @@ import java.time.Instant;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    private static void makeAnimation(View animatedViewObject, long duration) {
+    private static AnimatorSet makeSetOfAnimators(View animatedViewObject, long fadeOutAnimatiorDuration, long fadeInAnimatorDuration, long setOfAnimatorsDelay) {
+
         final ValueAnimator fadeOutAnimator = ValueAnimator.ofFloat(1f, 0f);
-        fadeOutAnimator.setDuration(duration);
+        fadeOutAnimator.setDuration(fadeOutAnimatiorDuration);
         fadeOutAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         final ValueAnimator fadeInAnimator = ValueAnimator.ofFloat(0f, 1f);
-        fadeInAnimator.setDuration(duration);
+        fadeInAnimator.setDuration(fadeInAnimatorDuration);
         fadeInAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -55,23 +56,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        fadeOutAnimator.addListener(new AnimatorListenerAdapter() {
+        AnimatorSet setOfAnimators = new AnimatorSet();
+        setOfAnimators.setStartDelay(setOfAnimatorsDelay);
+        setOfAnimators.play(fadeOutAnimator).before(fadeInAnimator);
+
+        setOfAnimators.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                fadeInAnimator.start();
+                setOfAnimators.start();
             }
         });
 
-        fadeInAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                fadeOutAnimator.start();
-            }
-        });
 
-        fadeOutAnimator.start();
+        return setOfAnimators;
     }
 
 
@@ -83,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         splashScreen.setKeepOnScreenCondition(() -> {
             try {
-                Thread.sleep(800);
+                Thread.sleep(600);
                 return false;
             } catch (Exception e) {
                 return false;
@@ -157,14 +155,14 @@ public class MainActivity extends AppCompatActivity {
         final View blueCircle = findViewById(R.id.first_blue_circle);
         final View redCircle = findViewById(R.id.first_red_circle);
 
-        makeAnimation(orangeCircle,5000);
-        makeAnimation(lightBlueCircle, 5500);
-        makeAnimation(blueCircle,6000);
-        makeAnimation(redCircle,6500);
+        AnimatorSet orangeCircleSetOfAnimators = makeSetOfAnimators(orangeCircle,5000,5000,700);
+        AnimatorSet lightBlueCircleSetOfAnimators = makeSetOfAnimators(lightBlueCircle,5500,5500,700);
+        AnimatorSet blueCircleSetOfAnimators = makeSetOfAnimators(blueCircle,6000,6000,700);
+        AnimatorSet redCircleSetOfAnimators = makeSetOfAnimators(redCircle,6000,6000,700);
 
-        
-
-
-
+        orangeCircleSetOfAnimators.start();
+        lightBlueCircleSetOfAnimators.start();
+        blueCircleSetOfAnimators.start();
+        redCircleSetOfAnimators.start();
     }
 }
