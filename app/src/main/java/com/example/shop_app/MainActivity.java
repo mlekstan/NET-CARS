@@ -27,11 +27,21 @@ import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.util.Log;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.content.Intent;
+
+
+
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private Button button1;
+
     private static AnimatorSet makeSetOfAnimators(View animatedViewObject, long fadeOutAnimatiorDuration, long fadeInAnimatorDuration, long setOfAnimatorsDelay) {
 
         final ValueAnimator fadeOutAnimator = ValueAnimator.ofFloat(1f, 0f);
@@ -78,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         splashScreen.setKeepOnScreenCondition(() -> {
             try {
@@ -134,20 +145,32 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
-            endAnimations.start();
-            endScreenAnimation.start();
-        });
 
+            endScreenAnimation.start();
+            endAnimations.start();
+        });
 
 
         EdgeToEdge.enable(this);
 
-        setContentView(R.layout.activity_main);
+
+        button1 = findViewById(R.id.buttonNextActivity);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainPageActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
 
         final View orangeCircle = findViewById(R.id.first_orange_circle);
@@ -165,4 +188,8 @@ public class MainActivity extends AppCompatActivity {
         blueCircleSetOfAnimators.start();
         redCircleSetOfAnimators.start();
     }
+
+
 }
+
+
