@@ -189,7 +189,10 @@ public class MainActivity extends AppCompatActivity {
         redCircleSetOfAnimators.start();
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }
 
 

@@ -6,6 +6,7 @@
     <color name="logoBlue">#08284a</color>
     <color name="logoLightBlue">#385c83</color>
     <color name="logoLightOrange">#f4901d</color>
+    <color name="logoRed">#ee5823</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
@@ -19,5 +20,6 @@
     <color name="_bg__frame_3_ek1_color">#385C83</color>
     <color name="_9_30_color">#191C1B</color>
     <color name="camera_ek2_color">#2E2E2E</color>
+    <color name="transparency">#00000000</color>
 
 </resources>

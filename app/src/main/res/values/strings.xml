@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Shop_app</string>
-    <string name="hello_world">Szczęść Boże!</string>
+    <string name="app_name">NET_CARS</string>
+    <string name="emial_hint">E-mail</string>
+    <string name="password_hint">Password</string>
 </resources>
