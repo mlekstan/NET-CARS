@@ -3,6 +3,7 @@ package com.example.shop_app;
 import static java.lang.Thread.*;
 
 import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -40,8 +41,9 @@ import java.time.Instant;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    private Button button1;
-
+    private Button buttonSignIn, buttonSignUp;
+    private AnimatorSet orangeCircleSetOfAnimators, lightBlueCircleSetOfAnimators, blueCircleSetOfAnimators, redCircleSetOfAnimators;
+    private View orangeCircle, lightBlueCircle, blueCircle, redCircle;
     private static AnimatorSet makeSetOfAnimators(View animatedViewObject, long fadeOutAnimatiorDuration, long fadeInAnimatorDuration, long setOfAnimatorsDelay) {
 
         final ValueAnimator fadeOutAnimator = ValueAnimator.ofFloat(1f, 0f);
@@ -88,11 +90,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
 
         splashScreen.setKeepOnScreenCondition(() -> {
             try {
-                Thread.sleep(600);
+                Thread.sleep(400);
                 return false;
             } catch (Exception e) {
                 return false;
@@ -126,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             ValueAnimator secondEndAnimation = ValueAnimator.ofFloat(1.0f, 0.0f);
-            secondEndAnimation.setDuration(500);
+            secondEndAnimation.setDuration(400);
             secondEndAnimation.setInterpolator(new AnticipateOvershootInterpolator());
 
             secondEndAnimation.addUpdateListener(anim -> {
@@ -150,48 +160,65 @@ public class MainActivity extends AppCompatActivity {
             endAnimations.start();
         });
 
+        orangeCircle = findViewById(R.id.first_orange_circle);
+        lightBlueCircle = findViewById(R.id.first_light_blue_circle);
+        blueCircle = findViewById(R.id.first_blue_circle);
+        redCircle = findViewById(R.id.first_red_circle);
 
-        EdgeToEdge.enable(this);
-
-
-        button1 = findViewById(R.id.buttonNextActivity);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainPageActivity.class);
-                startActivity(intent);
-
-            }
-        });
-        
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-
-
-        final View orangeCircle = findViewById(R.id.first_orange_circle);
-        final View lightBlueCircle = findViewById(R.id.first_light_blue_circle);
-        final View blueCircle = findViewById(R.id.first_blue_circle);
-        final View redCircle = findViewById(R.id.first_red_circle);
-
-        AnimatorSet orangeCircleSetOfAnimators = makeSetOfAnimators(orangeCircle,5000,5000,700);
-        AnimatorSet lightBlueCircleSetOfAnimators = makeSetOfAnimators(lightBlueCircle,5500,5500,700);
-        AnimatorSet blueCircleSetOfAnimators = makeSetOfAnimators(blueCircle,6000,6000,700);
-        AnimatorSet redCircleSetOfAnimators = makeSetOfAnimators(redCircle,6000,6000,700);
+        orangeCircleSetOfAnimators = makeSetOfAnimators(orangeCircle,5000,5000,700);
+        lightBlueCircleSetOfAnimators = makeSetOfAnimators(lightBlueCircle,5500,5500,700);
+        blueCircleSetOfAnimators = makeSetOfAnimators(blueCircle,6000,6000,700);
+        redCircleSetOfAnimators = makeSetOfAnimators(redCircle,6000,6000,700);
 
         orangeCircleSetOfAnimators.start();
         lightBlueCircleSetOfAnimators.start();
         blueCircleSetOfAnimators.start();
         redCircleSetOfAnimators.start();
+
+
+        buttonSignIn = findViewById(R.id.buttonSignIn);
+        buttonSignIn.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(),R.animator.button_animation));
+        buttonSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainPageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        buttonSignUp = findViewById(R.id.buttonSignUp1);
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("MainActivity", "I'm in onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        orangeCircleSetOfAnimators.pause();
+        lightBlueCircleSetOfAnimators.pause();
+        blueCircleSetOfAnimators.pause();
+        redCircleSetOfAnimators.pause();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        orangeCircleSetOfAnimators.resume();
+        lightBlueCircleSetOfAnimators.resume();
+        blueCircleSetOfAnimators.resume();
+        redCircleSetOfAnimators.resume();
     }
 }
 

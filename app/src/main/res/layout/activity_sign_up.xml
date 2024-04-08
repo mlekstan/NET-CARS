@@ -5,63 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <ImageView
-        android:id="@+id/first_orange_circle"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/orange_circle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.938"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.848" />
-
-    <ImageView
-        android:id="@+id/first_light_blue_circle"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:background="@drawable/light_blue_circle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.403"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.903" />
-
-    <ImageView
-        android:id="@+id/first_blue_circle"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/blue_circle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-
-    <ImageView
-        android:id="@+id/first_red_circle"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:background="@drawable/red_circle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+    tools:context=".SignUpActivity">
 
     <TextView
-        android:id="@+id/textSignInToConitinue"
+        android:id="@+id/textSignUpToConitinue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/staatliches"
-        android:text="Sign in to continue"
+        android:text="Sign up to continue"
         android:textColor="@color/logoBlue"
         android:textSize="23sp"
         app:layout_constraintBottom_toBottomOf="@id/horizontal_guideline_1"
@@ -118,17 +69,17 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline_2"
         app:layout_constraintEnd_toEndOf="@id/vertical_guideline_2"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/vertical_guideline_1"
         app:layout_constraintTop_toTopOf="@id/horizontal_guideline_1"
         app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/e_mail"
+            android:id="@+id/forename"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/emial_hint"
+            android:hint="@string/forename_hint"
             app:boxStrokeColor="@color/logoRed"
             app:cursorColor="@color/logoRed"
             app:hintTextColor="@color/logoRed"
@@ -137,6 +88,127 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextForename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/surname"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/surname_hint"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/logoRed"
+            app:cursorColor="@color/logoRed"
+            app:hintTextColor="@color/logoRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/forename"
+            app:layout_constraintVertical_bias="0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextSurname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/city"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/city_hint"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/logoRed"
+            app:cursorColor="@color/logoRed"
+            app:hintTextColor="@color/logoRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/surname"
+            app:layout_constraintVertical_bias="0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/street"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/street_hint"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/logoRed"
+            app:cursorColor="@color/logoRed"
+            app:hintTextColor="@color/logoRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/city"
+            app:layout_constraintVertical_bias="0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextStreet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phone_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone_number_hint"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/logoRed"
+            app:cursorColor="@color/logoRed"
+            app:hintTextColor="@color/logoRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/street"
+            app:layout_constraintVertical_bias="0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/e_mail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/emial_hint"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/logoRed"
+            app:cursorColor="@color/logoRed"
+            app:hintTextColor="@color/logoRed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_number"
             app:layout_constraintVertical_bias="0">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -155,8 +227,8 @@
             app:boxBackgroundMode="outline"
             app:boxStrokeColor="@color/logoRed"
             app:cursorColor="@color/logoRed"
-            app:endIconMode="password_toggle"
             app:hintTextColor="@color/logoRed"
+            app:endIconMode="password_toggle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
@@ -165,75 +237,59 @@
             app:layout_constraintVertical_bias="0">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditTextPassword"
+                android:id="@+id/textInputEditTextPasword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/buttonRecoverPassword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/logoBlue"
-            android:fontFamily="@font/staatliches"
-            android:text="Recover password"
-            android:textSize="15sp"
-            app:cornerRadius="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password"
-            app:layout_constraintVertical_bias="0.05"
-            app:layout_constraintWidth_percent="0.5" />
 
         <Button
-            android:id="@+id/buttonSignIn"
+            android:id="@+id/buttonSignUp2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/logoRed"
             android:fontFamily="@font/staatliches"
-            android:text="Sign in"
+            android:text="Sign up"
             android:textSize="20sp"
             app:cornerRadius="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/textDontHaveAccountYet"
+            app:layout_constraintBottom_toTopOf="@+id/textAlreadyHaveAccount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonRecoverPassword"
+            app:layout_constraintTop_toBottomOf="@+id/password"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintWidth_percent="0.7" />
 
         <TextView
-            android:id="@+id/textDontHaveAccountYet"
+            android:id="@+id/textAlreadyHaveAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/staatliches"
-            android:text="Don't have account yet?"
+            android:text="Already have account?"
             android:textColor="@color/logoBlue"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.6"
+            app:layout_constraintVertical_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password" />
 
         <Button
-            android:id="@+id/buttonSignUp1"
+            android:id="@+id/buttonLoginScreen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/logoLightBlue"
             android:fontFamily="@font/staatliches"
-            android:text="Sign up"
+            android:text="Login screen"
             android:textSize="15sp"
             app:cornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textDontHaveAccountYet"
+            app:layout_constraintTop_toBottomOf="@+id/textAlreadyHaveAccount"
             app:layout_constraintVertical_bias="0.01"
             app:layout_constraintWidth_percent="0.5" />
 
@@ -272,7 +328,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65" />
+        app:layout_constraintGuide_percent="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontal_guideline_3"
