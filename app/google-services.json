@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "117391697988",
+    "project_id": "net-cars123",
+    "storage_bucket": "net-cars123.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117391697988:android:afdedcf40c780ac6c8f411",
+        "android_client_info": {
+          "package_name": "com.example.shop_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX4PgJ5UvQm14C7BNezaG2D1kb1LpIdys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

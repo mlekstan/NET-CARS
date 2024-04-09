@@ -128,7 +128,6 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/emial_hint"
             app:boxStrokeColor="@color/logoRed"
             app:cursorColor="@color/logoRed"
             app:hintTextColor="@color/logoRed"
@@ -141,6 +140,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditTextEmail"
+                android:hint="@string/emial_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress" />
@@ -151,7 +151,6 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password_hint"
             app:boxBackgroundMode="outline"
             app:boxStrokeColor="@color/logoRed"
             app:cursorColor="@color/logoRed"
@@ -166,6 +165,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditTextPassword"
+                android:hint="@string/password_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -179,6 +179,7 @@
             android:fontFamily="@font/staatliches"
             android:text="Recover password"
             android:textSize="15sp"
+            android:textColor="@color/white"
             app:cornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
