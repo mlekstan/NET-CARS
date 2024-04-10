@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,7 @@ public class MainPageActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     Button buttonLogout;
+    ImageButton buttonBasket, buttonHeart, buttonUser, buttonSearch, buttonMenu;
     TextView textView;
     FirebaseUser user;
 
@@ -28,6 +30,11 @@ public class MainPageActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         buttonLogout = findViewById(R.id.buttonLogOut);
+        buttonBasket = findViewById(R.id.buttonBasket);
+        buttonHeart = findViewById(R.id.buttonHeart);
+        buttonUser = findViewById(R.id.buttonUser);
+        buttonSearch = findViewById(R.id.buttonSearch);
+        buttonMenu = findViewById(R.id.buttonMenu);
         textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
 
@@ -45,6 +52,15 @@ public class MainPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        buttonBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BasketActivity.class);
                 startActivity(intent);
                 finish();
             }
