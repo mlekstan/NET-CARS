@@ -98,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("MainActivity", "I'm in onCreate()");
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        Log.i("SplashScreen", "I'm after installSplashScreen()");
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         splashScreen.setKeepOnScreenCondition(() -> {
             try {
+                Log.i("SplashScreen", "I'm in setKeepOnScreenCondition()");
                 Thread.sleep(400);
                 return false;
             } catch (Exception e) {
@@ -132,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         */
 
         splashScreen.setOnExitAnimationListener(splashScreenViewProvider -> {
+            Log.i("SplashScreen", "I'm in setOnExitAnimationListener()");
             ObjectAnimator endScreenAnimation = ObjectAnimator.ofFloat(splashScreenViewProvider.getView(), "alpha", 1.0f, 0.0f);
             endScreenAnimation.setDuration(1000);
 
@@ -249,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() { // gdy już zalogowany przechodzi dalej
         super.onStart();
+        Log.i("MainActivity", "I'm in onStart()");
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
@@ -256,6 +261,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("MainActivity", "I'm in onResume()");
     }
 
     @Override
