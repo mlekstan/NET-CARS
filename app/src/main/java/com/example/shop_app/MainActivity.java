@@ -95,18 +95,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onStart() { // gdy już zalogowany przechodzi dalej
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,6 +244,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onStart() { // gdy już zalogowany przechodzi dalej
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
