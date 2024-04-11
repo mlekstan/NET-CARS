@@ -41,6 +41,7 @@ public class UserActivity extends AppCompatActivity {
         buttonLogo = findViewById(R.id.buttonLogo);
         buttonUser = findViewById(R.id.buttonUser);
         textEmail = findViewById(R.id.textUserEmail);
+        textName = findViewById(R.id.textUserName);
         user = auth.getCurrentUser();
 
         if (user == null){

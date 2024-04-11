@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,7 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
-
     Button buttonSignUp, buttonLoginScreen;
     TextInputEditText editTextEmail, editTextPassword;
     FirebaseAuth mAuth;
@@ -61,6 +61,9 @@ public class SignUpActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.textInputEditTextPassword);
         buttonSignUp = findViewById(R.id.buttonSignUp2);
         //buttonSignUp.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(),R.animator.button_animation));
+
+
+
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,15 +71,12 @@ public class SignUpActivity extends AppCompatActivity {
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
 
-                if (TextUtils.isEmpty(email)){
-                    Toast.makeText(SignUpActivity.this, "Enter Email", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                boolean isValidated = validateData(email, password);
+                if (!isValidated) { return; }
 
-                if (TextUtils.isEmpty(password)){
-                    Toast.makeText(SignUpActivity.this, "Enter Password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+
+
+
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -117,5 +117,22 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+
+
+    }
+    boolean validateData(String email,String password) {
+        //validate the data that are input by user.
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(SignUpActivity.this, "Email is invalid.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(password.length()<6) {
+            Toast.makeText(SignUpActivity.this, "Password is too short.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }
