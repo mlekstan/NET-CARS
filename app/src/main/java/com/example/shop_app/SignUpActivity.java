@@ -34,7 +34,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void onStart() { // gdy już zalogowany przechodzi dalej
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
@@ -60,7 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.textInputEditTextEmail);
         editTextPassword = findViewById(R.id.textInputEditTextPassword);
         buttonSignUp = findViewById(R.id.buttonSignUp2);
-        //buttonSignUp.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(),R.animator.button_animation));
+        buttonSignUp.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(),R.animator.button_animation));
 
 
 
@@ -83,29 +82,19 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    //Log.d(TAG, "createUserWithEmail:success");
-                                    //FirebaseUser user = mAuth.getCurrentUser();
                                     Toast.makeText(SignUpActivity.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
-                                    //updateUI(user);
 
                                     Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    // If sign in fails, display a message to the user.
                                     //Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
                                 }
                             }
                         });
-
-
-                //Intent intent = new Intent(SignUpActivity.this, MainPageActivity.class);
-                //startActivity(intent);
             }
         });
 
@@ -121,18 +110,20 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
     boolean validateData(String email,String password) {
-        //validate the data that are input by user.
+        //validate signUp data input by user
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(SignUpActivity.this, "Email is invalid.",
                     Toast.LENGTH_SHORT).show();
             return false;
         }
+
         if(password.length()<6) {
             Toast.makeText(SignUpActivity.this, "Password is too short.",
                     Toast.LENGTH_SHORT).show();
             return false;
         }
+
         return true;
     }
 }
