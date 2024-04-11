@@ -28,7 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
     Button buttonSignUp, buttonLoginScreen;
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, editTextForename, editTextSurname, editTextCity, editTextPhone;
     FirebaseAuth mAuth;
 
 
@@ -58,6 +58,10 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.textInputEditTextEmail);
         editTextPassword = findViewById(R.id.textInputEditTextPassword);
+        editTextForename = findViewById(R.id.textInputEditTextForename);
+        editTextSurname = findViewById(R.id.textInputEditTextSurname);
+        editTextCity = findViewById(R.id.textInputEditTextCity);
+        editTextPhone = findViewById(R.id.textInputEditTextPhoneNumber);
         buttonSignUp = findViewById(R.id.buttonSignUp2);
         buttonSignUp.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(),R.animator.button_animation));
 
@@ -66,11 +70,15 @@ public class SignUpActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
+                String email, password, forename, surname, city, phone;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
+                forename = String.valueOf(editTextForename.getText());
+                surname = String.valueOf(editTextSurname.getText());
+                city = String.valueOf(editTextCity.getText());
+                phone = String.valueOf(editTextPhone.getText());
 
-                boolean isValidated = validateData(email, password);
+                boolean isValidated = validateData(email, password, forename, surname, city, phone);
                 if (!isValidated) { return; }
 
 
@@ -109,8 +117,19 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     }
-    boolean validateData(String email,String password) {
+    boolean validateData(String email,String password, String forename, String surname, String city, String phone) {
         //validate signUp data input by user
+
+        String[] fields = {forename, surname, city, phone};
+        String[] fieldNames = {"forename", "surname", "city", "phone number"};
+
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i].isEmpty()) {
+                Toast.makeText(SignUpActivity.this, "Please provide your " + fieldNames[i] + "." ,
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(SignUpActivity.this, "Email is invalid.",
