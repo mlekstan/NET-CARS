@@ -37,6 +37,7 @@ public class UserActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         buttonBasket = findViewById(R.id.buttonBasket);
         buttonHeart = findViewById(R.id.buttonHeart);
+        buttonLogout = findViewById(R.id.buttonLogOut);
         buttonLogo = findViewById(R.id.buttonLogo);
         buttonUser = findViewById(R.id.buttonUser);
         textEmail = findViewById(R.id.textUserEmail);
@@ -50,6 +51,16 @@ public class UserActivity extends AppCompatActivity {
         else{
             textEmail.setText(user.getEmail());
         }
+
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         buttonBasket.setOnClickListener(new View.OnClickListener() {
             @Override

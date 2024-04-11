@@ -23,6 +23,7 @@ public class MainPageActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     ImageButton buttonBasket, buttonHeart, buttonUser, buttonSearch, buttonMenu, buttonLogo;
+    Button buttonLogout;
     TextView textView;
     FirebaseUser user;
 
@@ -45,6 +46,7 @@ public class MainPageActivity extends AppCompatActivity {
         buttonSearch = findViewById(R.id.buttonSearch);
         buttonMenu = findViewById(R.id.buttonMenu);
         buttonLogo = findViewById(R.id.buttonLogo);
+        buttonLogout = findViewById(R.id.buttonLogOut);
         textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
 
@@ -57,6 +59,16 @@ public class MainPageActivity extends AppCompatActivity {
             textView.setText(user.getUid());
         }
 
+
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         buttonBasket.setOnClickListener(new View.OnClickListener() {
