@@ -16,40 +16,32 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class UserActivity extends AppCompatActivity {
+public class HeartActivity extends AppCompatActivity {
     FirebaseAuth auth;
     Button buttonLogout;
-    ImageButton buttonBasket, buttonHeart, buttonUser, buttonLogo;
-    TextView textEmail, textName;
+    ImageButton buttonBasket, buttonHeart, buttonUser, buttonSearch, buttonMenu, buttonLogo;
+    TextView textView;
     FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_heart);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         buttonBasket = findViewById(R.id.buttonBasket);
         buttonHeart = findViewById(R.id.buttonHeart);
-        buttonLogo = findViewById(R.id.buttonLogo);
         buttonUser = findViewById(R.id.buttonUser);
-        textEmail = findViewById(R.id.textUserEmail);
+        buttonSearch = findViewById(R.id.buttonSearch);
+        buttonLogo = findViewById(R.id.buttonLogo);
+        buttonMenu = findViewById(R.id.buttonMenu);
         user = auth.getCurrentUser();
-
-        if (user == null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else{
-            textEmail.setText(user.getEmail());
-        }
 
         buttonBasket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,10 +61,10 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        buttonHeart.setOnClickListener(new View.OnClickListener() {
+        buttonUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HeartActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                 startActivity(intent);
                 finish();
             }

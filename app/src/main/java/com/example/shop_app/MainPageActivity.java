@@ -22,8 +22,7 @@ public class MainPageActivity extends AppCompatActivity {
     private static final String TAG = "MainPageActivity";
 
     FirebaseAuth auth;
-    Button buttonLogout;
-    ImageButton buttonBasket, buttonHeart, buttonUser, buttonSearch, buttonMenu;
+    ImageButton buttonBasket, buttonHeart, buttonUser, buttonSearch, buttonMenu, buttonLogo;
     TextView textView;
     FirebaseUser user;
 
@@ -39,12 +38,13 @@ public class MainPageActivity extends AppCompatActivity {
         });
 
         auth = FirebaseAuth.getInstance();
-        buttonLogout = findViewById(R.id.buttonLogOut);
+
         buttonBasket = findViewById(R.id.buttonBasket);
         buttonHeart = findViewById(R.id.buttonHeart);
         buttonUser = findViewById(R.id.buttonUser);
         buttonSearch = findViewById(R.id.buttonSearch);
         buttonMenu = findViewById(R.id.buttonMenu);
+        buttonLogo = findViewById(R.id.buttonLogo);
         textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
 
@@ -54,23 +54,33 @@ public class MainPageActivity extends AppCompatActivity {
             finish();
         }
         else{
-            textView.setText(user.getEmail());
+            textView.setText(user.getUid());
         }
 
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+
 
         buttonBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BasketActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        buttonHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HeartActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        buttonUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                 startActivity(intent);
                 finish();
             }

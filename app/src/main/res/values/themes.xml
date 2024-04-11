@@ -20,6 +20,10 @@
 
     <style name="AppTheme.MainPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
+    <style name="AppTheme.UserPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
+
+    <style name="AppTheme.HeartPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
+
     <style name="AppTheme.BasketPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
     <!-- Base application theme. -->
