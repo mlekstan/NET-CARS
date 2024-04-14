@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,9 +32,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.util.Log;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.content.Intent;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -190,10 +193,27 @@ public class MainActivity extends AppCompatActivity {
         redCircleSetOfAnimators.start();
 
 
+
+
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.textInputEditTextEmail);
+        editTextPassword = findViewById((R.id.textInputEditTextPassword));
         editTextPassword = findViewById(R.id.textInputEditTextPassword);
         buttonSignIn = findViewById(R.id.buttonSignIn);
+
+
+        editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Wywołaj akcję logowania
+                    buttonSignIn.performClick(); // Wykonuje kliknięcie na przycisku SignIn
+                    return true;
+                }
+                return false;
+            }
+        });
+
         buttonSignIn.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(),R.animator.button_animation));
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -19,28 +19,25 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
     Button buttonSignUp, buttonLoginScreen;
-    TextInputEditText editTextEmail, editTextPassword, editTextForename, editTextSurname, editTextCity, editTextPhone;
+    TextInputEditText editTextEmail, editTextPassword, editTextForename, editTextSurname, editTextCity, editTextStreet, editTextPhone;
     FirebaseAuth mAuth;
-
-
-    public void onStart() { // gdy już zalogowany przechodzi dalej
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
+    FirebaseFirestore firestoreDb;
+    FirebaseUser currentUser;
 
 
     @Override
@@ -56,46 +53,92 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
+        firestoreDb = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
         editTextEmail = findViewById(R.id.textInputEditTextEmail);
         editTextPassword = findViewById(R.id.textInputEditTextPassword);
         editTextForename = findViewById(R.id.textInputEditTextForename);
         editTextSurname = findViewById(R.id.textInputEditTextSurname);
         editTextCity = findViewById(R.id.textInputEditTextCity);
+        editTextStreet = findViewById(R.id.textInputEditTextStreet);
         editTextPhone = findViewById(R.id.textInputEditTextPhoneNumber);
         buttonSignUp = findViewById(R.id.buttonSignUp2);
+
+
+
         buttonSignUp.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(),R.animator.button_animation));
-
-
-
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password, forename, surname, city, phone;
+
+                String email, password, forename, surname, city, street, phone;
+
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
                 forename = String.valueOf(editTextForename.getText());
                 surname = String.valueOf(editTextSurname.getText());
                 city = String.valueOf(editTextCity.getText());
+                street = String.valueOf(editTextStreet.getText());
                 phone = String.valueOf(editTextPhone.getText());
 
                 boolean isValidated = validateData(email, password, forename, surname, city, phone);
                 if (!isValidated) { return; }
-
-
-
-
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(SignUpActivity.this, "Account created.",
-                                            Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, "Account (actually) was created");
 
-                                    Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    Map<String, Object> userData = new HashMap<>();
+                                    userData.put("forename", forename);
+                                    userData.put("surname", surname);
+                                    userData.put("city", city);
+                                    userData.put("street", street);
+                                    userData.put("phoneNumber", phone);
+                                    userData.put("email", email);
+
+                                    firestoreDb.collection("users").document(mAuth.getUid())
+                                            .set(userData)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "User data successfully written to document");
+
+                                                    Toast.makeText(SignUpActivity.this, "Account created.",
+                                                            Toast.LENGTH_SHORT).show();
+
+                                                    Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error occured while writing user data to document", e);
+
+                                                    Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                                                            Toast.LENGTH_SHORT).show();
+
+
+                                                    if (currentUser != null) {
+                                                        currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Log.w(TAG, "User account was deleted, becauese of error while writing document");
+                                                                } else {
+                                                                    Log.w(TAG, "User account not was deleted, although error occured while writing document");
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+
                                 } else {
                                     //Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(SignUpActivity.this, "Authentication failed.",
@@ -114,9 +157,18 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
+
+    public void onStart() { // gdy już zalogowany przechodzi dalej
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     boolean validateData(String email,String password, String forename, String surname, String city, String phone) {
         //validate signUp data input by user
 

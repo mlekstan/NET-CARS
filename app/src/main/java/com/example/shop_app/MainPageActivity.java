@@ -8,7 +8,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -25,7 +24,7 @@ public class MainPageActivity extends AppCompatActivity {
     ImageButton buttonBasket, buttonHeart, buttonUser, buttonSearch, buttonMenu, buttonLogo;
     Button buttonLogout;
     TextView textView;
-    FirebaseUser user;
+    FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,9 @@ public class MainPageActivity extends AppCompatActivity {
             return insets;
         });
 
+
         auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
 
         buttonBasket = findViewById(R.id.buttonBasket);
         buttonHeart = findViewById(R.id.buttonHeart);
@@ -48,15 +49,15 @@ public class MainPageActivity extends AppCompatActivity {
         buttonLogo = findViewById(R.id.buttonLogo);
         buttonLogout = findViewById(R.id.buttonLogOut);
         textView = findViewById(R.id.user_details);
-        user = auth.getCurrentUser();
 
-        if (user == null){
+
+        if (currentUser == null){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
         }
         else{
-            textView.setText(user.getUid());
+            textView.setText(currentUser.getUid());
         }
 
 
