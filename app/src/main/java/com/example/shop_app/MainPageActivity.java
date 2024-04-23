@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainPageActivity extends AppCompatActivity {
@@ -40,6 +41,8 @@ public class MainPageActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
         buttonBasket = findViewById(R.id.buttonBasket);
         buttonHeart = findViewById(R.id.buttonHeart);

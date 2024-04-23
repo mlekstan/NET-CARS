@@ -16,9 +16,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,7 +31,7 @@ public class UserActivity extends AppCompatActivity {
 
     private static final String TAG = "UserActivity";
     FirebaseAuth auth;
-    Button buttonLogout;
+    Button buttonLogout, buttonAddActivity;
     ImageButton buttonBasket, buttonHeart, buttonUser, buttonLogo;
     TextView textEmail, textName;
     FirebaseUser currentUser;
@@ -56,6 +60,32 @@ public class UserActivity extends AppCompatActivity {
         buttonUser = findViewById(R.id.buttonUser);
         textEmail = findViewById(R.id.textUserEmail);
         textName = findViewById(R.id.textUserName);
+        buttonAddActivity = findViewById(R.id.buttonAddActivity);
+        FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference docRef = firestoreDb.collection("users").document(userId);
+
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String forename = documentSnapshot.getString("forename");
+                    String surname = documentSnapshot.getString("surname");
+
+                    textName.setText(forename + " " + surname);
+
+                } else {
+                    Log.d(TAG, "Error loading Name from document");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error getting document", e);
+            }
+        });
 
 
         if (currentUser == null){
@@ -65,6 +95,7 @@ public class UserActivity extends AppCompatActivity {
         }
         else{
             textEmail.setText(currentUser.getEmail());
+            
         }
 
         buttonLogout.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +130,15 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HeartActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        buttonAddActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddCarActivity.class);
                 startActivity(intent);
                 finish();
             }
