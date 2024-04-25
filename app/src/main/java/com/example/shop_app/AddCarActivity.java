@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -61,8 +62,7 @@ public class AddCarActivity extends AppCompatActivity {
             return insets;
         });
 
-        binding = ActivityAddCarBinding.inflate(getLayoutInflater());
-        //setContentView(binding.getRoot());
+
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -95,27 +95,34 @@ public class AddCarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                String brand, price, model, street, mileage, description;
+                String brand, price, model, street, mileage, description, uId, imageId;
                 brand = String.valueOf(editTextBrand.getText());
                 price = String.valueOf(editTextPrice.getText());
                 model = String.valueOf(editTextModel.getText());
                 street = String.valueOf(editTextStreet.getText());
                 mileage = String.valueOf(editTextMileage.getText());
                 description = String.valueOf(editTextDescription.getText());
+                uId = currentUser.getUid();
+                imageId = getSaltString();
+
+                boolean isValidated = validateData(brand, price, model, street, mileage, description);
+                if(!isValidated){ return; }
+
+                if (imageUri == null) {
+                    Toast.makeText(AddCarActivity.this, "Please select an image", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
 
                 Map<String, Object> car = new HashMap<>();
-                car.put("uid", currentUser.getUid());
+                car.put("uid", uId);
                 car.put("brand", brand);
                 car.put("price", price);
                 car.put("model", model);
                 car.put("street", street);
                 car.put("mileage", mileage);
                 car.put("description", description);
-
-
-
+                car.put("imageId", imageId);
 
 
                 db.collection("cars")
@@ -123,7 +130,11 @@ public class AddCarActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(AddCarActivity.this, "Car added successfully", Toast.LENGTH_SHORT).show();
+                                uploadImage(imageId);
                                 Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -133,8 +144,6 @@ public class AddCarActivity extends AppCompatActivity {
                             }
                         });
 
-
-                    uploadImage();
 
 
             }
@@ -170,22 +179,22 @@ public class AddCarActivity extends AppCompatActivity {
 
     }
 
-    private void uploadImage() {
+    private void uploadImage(String imageId) {
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading files...");
         progressDialog.show();
 
-
-        String filename = getSaltString();
-        storageReference = FirebaseStorage.getInstance().getReference("images/" + filename);
+        storageReference = FirebaseStorage.getInstance().getReference("images/" + imageId);
         storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 imageViewCar.setImageURI(null);
-                Toast.makeText(AddCarActivity.this, "Image uploaded succesfully", Toast.LENGTH_SHORT).show();
+
                 if(progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -201,6 +210,24 @@ public class AddCarActivity extends AppCompatActivity {
 
     }
 
+    boolean validateData(String brand, String price, String model, String street, String mileage, String description) {
+        //validate data input by user
+
+        String[] fields = {brand, price, model, street, mileage, description};
+        String[] fieldNames = {"brand", "price", "model", "street", "mileage", "description"};
+
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i].isEmpty()) {
+                Toast.makeText(AddCarActivity.this, "Please provide your " + fieldNames[i] + "." ,
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     protected String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
@@ -213,5 +240,6 @@ public class AddCarActivity extends AppCompatActivity {
         return saltStr;
 
     }
+
 
 }

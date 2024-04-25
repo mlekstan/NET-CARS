@@ -118,9 +118,6 @@
                 android:text="Add Car"
                 />
 
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
