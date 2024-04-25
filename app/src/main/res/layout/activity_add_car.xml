@@ -214,12 +214,40 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditTextDescription"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
+        <Button
+            android:id="@+id/buttonImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/logoLightBlue"
+            android:fontFamily="@font/staatliches"
+            android:text="Add image"
+            android:textSize="15sp"
+            app:cornerRadius="4dp"
+            app:layout_constraintBottom_toTopOf="@id/horizontal_guideline_5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            app:layout_constraintWidth_percent="0.5" />
 
+        <ImageView
+            android:id="@+id/imageViewCar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:srcCompat="@tools:sample/avatars"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/horizontal_guideline_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintWidth_percent="0.5"
+
+            />
 
         <Button
             android:id="@+id/buttonSaleCar"
@@ -251,7 +279,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonSignUp2" />
+            app:layout_constraintTop_toBottomOf="@id/horizontal_guideline_5" />
 
         <Button
             android:id="@+id/buttonExit"
