@@ -8,6 +8,15 @@
     <string name="street_hint">Street</string>
     <string name="postal_address_hint">Postal address</string>
     <string name="phone_number_hint">Phone number</string>
+    <string name="year_of_production_hint">Year of production</string>
+    <string name="brand_hint">Brand</string>
+    <string name="model_hint">Model</string>
+    <string name="condition_hint">Condition</string>
+    <string name="engine_size_hint">Engine size [cc]</string>
+    <string name="engine_power">Engine power [KM]</string>
+    <string name="price_hint">Price [PLN]</string>
+    <string name="mileage_hint">Mileage [km]</string>
+    <string name="description_hint">Description</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
