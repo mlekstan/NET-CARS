@@ -1,13 +1,17 @@
 package com.example.shop_app;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,7 +19,17 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainPageActivity extends AppCompatActivity {
@@ -23,9 +37,13 @@ public class MainPageActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     ImageButton buttonBasket, buttonHeart, buttonUser, buttonSearch, buttonMenu, buttonLogo;
-    Button buttonLogout;
-    TextView textView;
     FirebaseUser currentUser;
+    ArrayList<CarModel> carModelArrayList;
+    RecyclerView recyclerView;
+    MyNewAdapter myNewAdapter;
+    
+    List<CarModel> items;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +59,12 @@ public class MainPageActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        recyclerView = findViewById((R.id.recyclerviewImages));
 
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new MyNewAdapter(getApplicationContext(), items));
 
         buttonBasket = findViewById(R.id.buttonBasket);
         buttonHeart = findViewById(R.id.buttonHeart);
@@ -50,29 +72,20 @@ public class MainPageActivity extends AppCompatActivity {
         buttonSearch = findViewById(R.id.buttonSearch);
         buttonMenu = findViewById(R.id.buttonMenu);
         buttonLogo = findViewById(R.id.buttonLogo);
-        buttonLogout = findViewById(R.id.buttonLogOut);
-        textView = findViewById(R.id.user_details);
+
+        items = new ArrayList<CarModel>();
+        myNewAdapter = new MyNewAdapter(MainPageActivity.this, items);
+
+        recyclerView.setAdapter(myNewAdapter);
+
+        //EventChangeListener();
 
 
-        if (currentUser == null){
+        if (currentUser == null) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
         }
-        else{
-            textView.setText(currentUser.getUid());
-        }
-
-
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
 
         buttonBasket.setOnClickListener(new View.OnClickListener() {
@@ -103,4 +116,35 @@ public class MainPageActivity extends AppCompatActivity {
         });
 
     }
+
+
+    /* nie wiem jak to zrobic
+    private void EventChangeListener() {
+
+        db.collection("cars")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("firestore error", error.getMessage());
+                    return;
+                }
+
+                for (DocumentChange dc : value.getDocumentChanges()) {
+                    if (dc.getType() == DocumentChange.Type.ADDED) {
+
+                        items.add(dc.getDocument().toObject(CarModel.class));
+                    }
+
+                    myNewAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
+
+
+     */
+
 }
