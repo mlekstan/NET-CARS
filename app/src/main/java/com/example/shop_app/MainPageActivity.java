@@ -1,6 +1,7 @@
 package com.example.shop_app;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -10,13 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -24,12 +29,13 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Document;
-
-import java.sql.Array;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainPageActivity extends AppCompatActivity {
@@ -38,12 +44,13 @@ public class MainPageActivity extends AppCompatActivity {
     FirebaseAuth auth;
     ImageButton buttonBasket, buttonHeart, buttonUser, buttonSearch, buttonMenu, buttonLogo;
     FirebaseUser currentUser;
-    ArrayList<CarModel> carModelArrayList;
+    FirebaseFirestore firestoreDb;
+    StorageReference storageReference;
     RecyclerView recyclerView;
     MyNewAdapter myNewAdapter;
-    
-    List<CarModel> items;
-
+    List<BasicCarInfo> basicCarInfoList;
+    Uri onlineImageUri;
+    TextView xd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +66,11 @@ public class MainPageActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
-        recyclerView = findViewById((R.id.recyclerviewImages));
 
-
+        recyclerView = findViewById((R.id.recyclerviewOffers));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyNewAdapter(getApplicationContext(), items));
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainPageActivity.this, RecyclerView.VERTICAL, false));
+        recyclerView.setAdapter(new MyNewAdapter(getApplicationContext(), basicCarInfoList));
 
         buttonBasket = findViewById(R.id.buttonBasket);
         buttonHeart = findViewById(R.id.buttonHeart);
@@ -73,12 +79,11 @@ public class MainPageActivity extends AppCompatActivity {
         buttonMenu = findViewById(R.id.buttonMenu);
         buttonLogo = findViewById(R.id.buttonLogo);
 
-        items = new ArrayList<CarModel>();
-        myNewAdapter = new MyNewAdapter(MainPageActivity.this, items);
+        basicCarInfoList = new ArrayList<BasicCarInfo>();
+        myNewAdapter = new MyNewAdapter(MainPageActivity.this, basicCarInfoList);
 
         recyclerView.setAdapter(myNewAdapter);
 
-        //EventChangeListener();
 
 
         if (currentUser == null) {
@@ -115,36 +120,79 @@ public class MainPageActivity extends AppCompatActivity {
             }
         });
 
-    }
 
 
-    /* nie wiem jak to zrobic
-    private void EventChangeListener() {
+        firestoreDb = FirebaseFirestore.getInstance();
 
-        db.collection("cars")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firestoreDb.collection("cars").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.e("firestore error", error.getMessage());
-                    return;
+
+                if (error == null) {
+
                 }
 
-                for (DocumentChange dc : value.getDocumentChanges()) {
-                    if (dc.getType() == DocumentChange.Type.ADDED) {
+                List<DocumentChange> listOfDocumentsChanges = value.getDocumentChanges();
 
-                        items.add(dc.getDocument().toObject(CarModel.class));
+                int i = 0;
+                for (DocumentChange changedDocument:listOfDocumentsChanges) {
+
+                    if (changedDocument.getType() == DocumentChange.Type.ADDED) {
+                        Object[] changedDocumentFieldsValues = obtainDataFromChangedDocument(changedDocument, "Brand", "Model", "Year of production", "Price [PLN]", "mainImageId", "uid");
+
+                        storageReference = FirebaseStorage.getInstance().getReference("images/" + String.valueOf(changedDocumentFieldsValues[5]) + "/" + changedDocument.getDocument().getId() + "/" + String.valueOf(changedDocumentFieldsValues[4]));
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                onlineImageUri = uri;
+                                basicCarInfoList.add(new BasicCarInfo(changedDocumentFieldsValues[0].toString(), changedDocumentFieldsValues[1].toString(), changedDocumentFieldsValues[2].toString(), changedDocumentFieldsValues[3].toString(), onlineImageUri));
+                                myNewAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    } else if (changedDocument.getType() == DocumentChange.Type.MODIFIED) {
+                        Object[] changedDocumentFieldsValues = obtainDataFromChangedDocument(changedDocument, "Brand", "Model", "Year of production", "Price [PLN]", "mainImageId", "uid");
+
+                        storageReference = FirebaseStorage.getInstance().getReference("images/" + String.valueOf(changedDocumentFieldsValues[5]) + "/" + changedDocument.getDocument().getId() + "/" + String.valueOf(changedDocumentFieldsValues[4]));
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                onlineImageUri = uri;
+
+                            }
+                        });
+
+                        //listOfDocumentsChanges.set(i, new )
+
+                    } else {
+                        //listOfDocumentsChanges.remove(i);
                     }
 
-                    myNewAdapter.notifyDataSetChanged();
+                    i++;
                 }
+                myNewAdapter.notifyDataSetChanged();
             }
         });
 
+
+
+    }
+
+
+    Object[] obtainDataFromChangedDocument(DocumentChange changedDocument, String ... fields) {
+        Object[] fieldsValues = new Object[fields.length];
+        Map<String, Object> fieldToValuesMap = changedDocument.getDocument().getData();
+
+        int i = 0;
+        for (String field:fields) {
+            fieldsValues[i] = fieldToValuesMap.get(field);
+            i++;
+        }
+
+        return fieldsValues;
     }
 
 
 
-     */
 
 }

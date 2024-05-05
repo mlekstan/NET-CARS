@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +22,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.shop_app.databinding.ActivityAddCarBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,12 +32,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 public class AddCarActivity extends AppCompatActivity {
@@ -48,13 +43,12 @@ public class AddCarActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ActivityAddCarBinding binding;
     private FirebaseUser currentUser;
     private FirebaseFirestore firestoreDb;
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
-    private Button buttonSale, buttonExit, buttonImage;
-    private TextView editTextBrand, editTextModel, editTextPrice, editTextYearOfProduction, editTextMileage, editTextDescription;
+    private Button buttonPostAdverisement, buttonExit, buttonAddImage;
+    //private TextView editTextBrand, editTextModel, editTextPrice, editTextYearOfProduction, editTextMileage, editTextDescription;
     private List<Uri> imagesUriList;
     private Uri imageUri;
 
@@ -73,17 +67,18 @@ public class AddCarActivity extends AppCompatActivity {
         firestoreDb = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
-
-        buttonSale = findViewById(R.id.buttonPostAdvertisement);
-        buttonExit = findViewById(R.id.buttonExit);
-        buttonImage = findViewById(R.id.buttonImage);
-        editTextBrand = findViewById(R.id.textInputEditTextBrand);
-        editTextPrice = findViewById(R.id.textInputEditTextPrice);
-        editTextModel = findViewById(R.id.textInputEditTextModel);
-        editTextYearOfProduction = findViewById(R.id.textInputEditTextYearOfProduction);
-        editTextMileage = findViewById(R.id.textInputEditTextMileage);
-        editTextDescription = findViewById(R.id.textInputEditTextDescription);
         imagesUriList = new ArrayList<Uri>();
+
+        buttonPostAdverisement = findViewById(R.id.buttonPostAdvertisement);
+        buttonExit = findViewById(R.id.buttonExit);
+        buttonAddImage = findViewById(R.id.buttonImage);
+
+        TextView editTextBrand = findViewById(R.id.textInputEditTextBrand);
+        TextView editTextPrice = findViewById(R.id.textInputEditTextPrice);
+        TextView editTextModel = findViewById(R.id.textInputEditTextModel);
+        TextView editTextYearOfProduction = findViewById(R.id.textInputEditTextYearOfProduction);
+        TextView editTextMileage = findViewById(R.id.textInputEditTextMileage);
+        TextView editTextDescription = findViewById(R.id.textInputEditTextDescription);
 
 
         recyclerView = findViewById(R.id.recyclerviewImages);
@@ -96,32 +91,18 @@ public class AddCarActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-        buttonImage.setOnClickListener(new View.OnClickListener() {
+        buttonAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
 
-        buttonSale.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(), R.animator.button_animation));
-        buttonSale.setOnClickListener(new View.OnClickListener() {
+        buttonPostAdverisement.setStateListAnimator(AnimatorInflater.loadStateListAnimator(getApplicationContext(), R.animator.button_animation));
+        buttonPostAdverisement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String brand, price, model, yearOfProduction, mileage, description, uId;
-                List<String> imagesIds = new ArrayList<String>();
-
-                brand = String.valueOf(editTextBrand.getText());
-                price = String.valueOf(editTextPrice.getText());
-                model = String.valueOf(editTextModel.getText());
-                yearOfProduction = String.valueOf(editTextYearOfProduction.getText());
-                mileage = String.valueOf(editTextMileage.getText());
-                description = String.valueOf(editTextDescription.getText());
-                uId = currentUser.getUid();
-                imagesIds = generateListOfIDs(imagesUriList.size());
-
-
-                boolean isValidated = validateData(brand, price, model, yearOfProduction, mileage, description);
+                boolean isValidated = validateData(editTextBrand, editTextModel, editTextPrice, editTextYearOfProduction, editTextMileage, editTextDescription);
                 if (!isValidated) {
                     return;
                 }
@@ -131,48 +112,9 @@ public class AddCarActivity extends AppCompatActivity {
                     return;
                 }
 
+                List<String> imagesIds = generateListOfIDs(imagesUriList.size());
 
-                Map<String, Object> car = new HashMap<>();
-                car.put("uid", uId);
-                car.put("brand", brand);
-                car.put("price", price);
-                car.put("model", model);
-                car.put("yearOfProduction", yearOfProduction);
-                car.put("mileage", mileage);
-                car.put("description", description);
-                car.put("imagesIds", imagesIds);
-
-
-                List<String> finalImagesIds = imagesIds; // ??
-                firestoreDb.collection("cars")
-                        .add(car)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                String documentId = documentReference.getId();
-                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentId);
-
-                                boolean upoadingError = uploadImages(finalImagesIds, documentId, documentReference);
-
-                                if (upoadingError == false) {
-                                    Log.d(TAG, "Files uploaded succesfully to the remote path:" + "images/" + currentUser.getUid() + "/" + documentId + "/");
-                                    Toast.makeText(AddCarActivity.this, "Offer added successfully", Toast.LENGTH_SHORT).show();
-
-                                } else {
-                                    Log.e(TAG, "Error occured while uploading files" + documentId);
-                                    Log.e(TAG, "Added DocumentSnapshot and uploaded files were deleted from Firestore" + documentId);
-                                    Toast.makeText(AddCarActivity.this, "Adding offer failed", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, "Error occured while adding DocumentSnapshot", e);
-                                Toast.makeText(AddCarActivity.this, "Adding offer failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                uploadNewDocument(imagesIds, "cars", editTextBrand, editTextModel, editTextPrice, editTextYearOfProduction, editTextMileage, editTextDescription);
 
             }
         });
@@ -187,6 +129,7 @@ public class AddCarActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void selectImage() {
         Intent intent = new Intent();
@@ -205,10 +148,10 @@ public class AddCarActivity extends AppCompatActivity {
             imagesUriList.add(imageUri);
             mAdapter.notifyDataSetChanged();
         }
-
     }
 
-    private boolean uploadImages(List<String> imagesIds, String lastFolderName, DocumentReference documentReference) {
+
+    private boolean uploadImages(List<String> imagesIds, String imagesUploadPath, DocumentReference documentReference) {
 
         progressDialog = new ProgressDialog(AddCarActivity.this);
         progressDialog.setTitle("Uploading files...");
@@ -219,13 +162,12 @@ public class AddCarActivity extends AppCompatActivity {
 
         int imagesIdsSize = imagesIds.size();
         for (int i = 0; i < imagesIdsSize; i++) {
-            storageReference = FirebaseStorage.getInstance().getReference("images/" + currentUser.getUid() + "/" + lastFolderName + "/" + imagesIds.get(i));
+            storageReference = FirebaseStorage.getInstance().getReference(imagesUploadPath + imagesIds.get(i));
 
             final int finalI = i;
             storageReference.putFile(imagesUriList.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    //imageViewCar.setImageURI(null);
 
                     if (finalI == imagesIdsSize - 1 && progressDialog.isShowing()) {
                         Log.d(TAG, "Last file uploaded succesfully");
@@ -244,7 +186,7 @@ public class AddCarActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
 
-                    documentReference.delete();
+                    //documentReference.delete();
 
                     Toast.makeText(AddCarActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
                 }
@@ -258,15 +200,59 @@ public class AddCarActivity extends AppCompatActivity {
         return uploadingError;
     }
 
-    boolean validateData(String brand, String price, String model, String street, String mileage, String description) {
+
+    private void uploadNewDocument(List<String> imagesIds, String collectionPath, TextView ... textViews) {
+        String mainImageId = imagesIds.get(0);
+
+        Map<String,Object> fieldsNamesToValuesMap = new HashMap<>();
+
+        for (TextView textView:textViews) {
+            fieldsNamesToValuesMap.put(String.valueOf(textView.getHint()), String.valueOf(textView.getText()));
+        }
+        fieldsNamesToValuesMap.put("uid", currentUser.getUid());
+        fieldsNamesToValuesMap.put("imagesIds", imagesIds);
+        fieldsNamesToValuesMap.put("mainImageId", mainImageId);
+
+        List<String> finalImagesIds = imagesIds;
+        firestoreDb.collection(collectionPath)
+                .add(fieldsNamesToValuesMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        String documentId = documentReference.getId();
+                        String imagesUploadPath = "images/" + currentUser.getUid() + "/" + documentId + "/";
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentId);
+
+                        boolean uploadingError = uploadImages(finalImagesIds, imagesUploadPath, documentReference);
+
+                        if (uploadingError == false) {
+                            Log.d(TAG, "Files uploaded succesfully to the remote path: " + imagesUploadPath);
+                            Toast.makeText(AddCarActivity.this, "Offer added successfully", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Log.e(TAG, "Error occured while uploading files " + documentId);
+                            Log.e(TAG, "Added DocumentSnapshot and uploaded files were deleted from Firestore " + documentId);
+                            Toast.makeText(AddCarActivity.this, "Adding offer failed", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error occured while adding DocumentSnapshot", e);
+                        Toast.makeText(AddCarActivity.this, "Adding offer failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    private boolean validateData(TextView ... textViews) {
         //validate data input by user
 
-        String[] fields = {brand, price, model, street, mileage, description};
-        String[] fieldNames = {"brand", "price", "model", "street", "mileage", "description"};
-
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i].isEmpty()) {
-                Toast.makeText(AddCarActivity.this, "Please, fill " + fieldNames[i] + " field.",
+        for (int i = 0; i < textViews.length; i++) {
+            if (String.valueOf(textViews[i].getText()).isEmpty()) {
+                Toast.makeText(AddCarActivity.this, "Please, fill " + String.valueOf(textViews[i].getHint()) + " field.",
                         Toast.LENGTH_SHORT).show();
                 return false;
             }
