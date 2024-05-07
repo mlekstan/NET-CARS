@@ -1,11 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Shop_app" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/transparency</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
+    <style name="Base.Theme.Shop_app" parent="Theme.Material3.Light.NoActionBar"></style>
 
     <style name="Theme.Shop_app" parent="Base.Theme.Shop_app"></style>
 
@@ -25,6 +20,7 @@
     <style name="AppTheme.HeartPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
     <style name="AppTheme.BasketPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
+    <style name="AppTheme.OfferPage" parent="Theme.MaterialComponents.Light.NoActionBar"></style>
 
     <!-- Base application theme. -->
     <style name="Base.Theme.AnimatedSplash.MySplash" parent="Theme.Material3.DayNight.NoActionBar">

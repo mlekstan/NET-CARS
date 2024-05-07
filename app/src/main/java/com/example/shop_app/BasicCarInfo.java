@@ -1,26 +1,18 @@
 package com.example.shop_app;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.storage.StorageReference;
 
 
 public class BasicCarInfo {
-    String brand, model, yearOfProduction, price;
-    Uri mainImageUri;
+    private String brand, model, yearOfProduction, price, pathToDocument, pathToDocumentFileFolder;
+    private Uri mainImageUri;
 
-    public BasicCarInfo() {
-        this.brand = "";
-        this.model = "";
-        this.yearOfProduction = "";
-        this.price = "";
-        this.mainImageUri = null;
-    }
-    public BasicCarInfo(String brand, String model, String yearOfProduction, String price, Uri mainImageUri) {
-        this.brand = brand;
-        this.model = model;
-        this.yearOfProduction = yearOfProduction;
-        this.price = price;
-        this.mainImageUri = mainImageUri;
-    }
 
     public String getBrand() {
         return brand;
@@ -54,6 +46,22 @@ public class BasicCarInfo {
         this.price = price;
     }
 
+    public String getPathToDocument() {
+        return pathToDocument;
+    }
+
+    public void setPathToDocument(String pathToDocument) {
+        this.pathToDocument = pathToDocument;
+    }
+
+    public String getPathToDocumentFileFolder() {
+        return pathToDocumentFileFolder;
+    }
+
+    public void setPathToDocumentFileFolder(String pathToDocumentFileFolder) {
+        this.pathToDocumentFileFolder = pathToDocumentFileFolder;
+    }
+
     public Uri getMainImageUri() {
         return mainImageUri;
     }
@@ -62,4 +70,25 @@ public class BasicCarInfo {
         this.mainImageUri = mainImageUri;
     }
 
+    public BasicCarInfo() {
+        this.brand = "";
+        this.model = "";
+        this.yearOfProduction = "";
+        this.price = "";
+        this.mainImageUri = null;
+        this.pathToDocument = "";
+        this.pathToDocumentFileFolder = "";
+    }
+
+    public BasicCarInfo(String brand, String model, String yearOfProduction, String price, Uri mainImageUri, String pathToDocument, String pathToDocumentFileFolder) {
+        this.brand = brand;
+        this.model = model;
+        this.yearOfProduction = yearOfProduction;
+        this.price = price;
+        this.mainImageUri = mainImageUri;
+        this.pathToDocument = pathToDocument;
+        this.pathToDocumentFileFolder = pathToDocumentFileFolder;
+    }
+
 }
+

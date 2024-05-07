@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,17 +19,19 @@ import java.util.List;
 public class MyNewAdapter extends RecyclerView.Adapter<MyNewAdapter.MyNewViewHolder> {
     Context context;
     List<BasicCarInfo> listOfBasicCarInfo;
+    private final MyNewRecyclerViewInterface classImplementingInterface;
 
-    public MyNewAdapter(Context context, List<BasicCarInfo> listOfBasicCarInfo) {
+    public MyNewAdapter(Context context, List<BasicCarInfo> listOfBasicCarInfo, MyNewRecyclerViewInterface classImplementingInterface) {
         this.context = context;
         this.listOfBasicCarInfo = listOfBasicCarInfo;
+        this.classImplementingInterface = classImplementingInterface;
     }
 
     @NonNull
     @Override
     public MyNewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view =  LayoutInflater.from(context).inflate(R.layout.recycler_view_row, parent, false);
-        MyNewViewHolder holder = new MyNewViewHolder(view);
+        MyNewViewHolder holder = new MyNewViewHolder(view, classImplementingInterface);
         return holder;
     }
 
@@ -48,12 +52,25 @@ public class MyNewAdapter extends RecyclerView.Adapter<MyNewAdapter.MyNewViewHol
         ImageView imageView;
         TextView brandAndModel, price, yearOfProduction;
 
-        public MyNewViewHolder(@NonNull View itemView) {
+        public MyNewViewHolder(@NonNull View itemView, MyNewRecyclerViewInterface classImplementingInterface) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewCarMainPhoto);
             brandAndModel = itemView.findViewById(R.id.textViewBrandAndModel);
             price = itemView.findViewById(R.id.textViewPrice);
             yearOfProduction = itemView.findViewById(R.id.textViewYearOfProduction);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (classImplementingInterface != null) {
+                        int position = getAdapterPosition();
+
+                        if (position != RecyclerView.NO_POSITION) {
+                            classImplementingInterface.onItemViewClick(position);
+                        }
+                    }
+                }
+            });
 
         }
     }

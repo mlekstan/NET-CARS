@@ -42,25 +42,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Place your scrollable content inside this ConstraintLayout -->
-            <!-- Things you want to be scrollable -->
-
-            <!-- For example, you can add views and set constraints within this ConstraintLayout -->
-
-            <TextView
-                android:id="@+id/textViewScrollable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Scrollable Content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textSize="18sp" />
-
-
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

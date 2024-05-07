@@ -174,6 +174,10 @@ public class AddCarActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         imagesUriList.clear();
                         mAdapter.notifyDataSetChanged();
+
+                        Intent intent = new Intent(AddCarActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
 
                 }
