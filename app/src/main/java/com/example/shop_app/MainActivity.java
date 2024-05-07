@@ -28,6 +28,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.splashscreen.SplashScreenViewProvider;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -38,6 +39,7 @@ import android.widget.ImageButton;
 import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.SplashScreenView;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             Instant startTime = Instant.now();
             long endTime = 2;
 
-            while((Duration.between(startTime,Instant.now())).getSeconds() < endTime){} // pojebane ale niech zostanie na pamiatkę - też działa ;)
+            while((Duration.between(startTime,Instant.now())).getSeconds() < endTime){} // dramat ale niech zostanie na pamiatkę - też działa ;)
             return false;
         });
 
