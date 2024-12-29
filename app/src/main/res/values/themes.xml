@@ -13,13 +13,18 @@
 
     <style name="AppTheme.SignUpPage" parent="Theme.MaterialComponents.Light.NoActionBar"></style>
 
-    <style name="AppTheme.MainPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
+    <style name="AppTheme.MainPage" parent="Theme.Material3.Light.NoActionBar">
+        <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+    </style>
 
     <style name="AppTheme.UserPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
     <style name="AppTheme.HeartPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
     <style name="AppTheme.BasketPage" parent="Theme.AppCompat.Light.NoActionBar"></style>
+
     <style name="AppTheme.OfferPage" parent="Theme.MaterialComponents.Light.NoActionBar"></style>
 
     <!-- Base application theme. -->

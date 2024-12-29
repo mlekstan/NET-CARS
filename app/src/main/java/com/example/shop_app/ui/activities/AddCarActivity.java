@@ -1,4 +1,4 @@
-package com.example.shop_app;
+package com.example.shop_app.ui.activities;
 
 import android.animation.AnimatorInflater;
 import android.app.ProgressDialog;
@@ -22,6 +22,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.shop_app.ui.adapters.MyAdapter;
+import com.example.shop_app.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -123,8 +125,6 @@ public class AddCarActivity extends AppCompatActivity {
         buttonExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

@@ -1,4 +1,4 @@
-package com.example.shop_app;
+package com.example.shop_app.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,11 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.shop_app.MyNewRecyclerViewInterface;
+import com.example.shop_app.R;
+import com.example.shop_app.BasicCarInfo;
 
 import java.util.List;
 

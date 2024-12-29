@@ -1,27 +1,26 @@
-package com.example.shop_app;
+package com.example.shop_app.ui.fragments;
 
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
 import android.util.Log;
-import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.viewpager2.widget.ViewPager2;
-
-import com.bumptech.glide.RequestManager;
+import com.example.shop_app.DataFetcher;
+import com.example.shop_app.R;
+import com.example.shop_app.databinding.FragmentOfferDetailsBinding;
+import com.example.shop_app.ui.adapters.ViewPagerAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,42 +28,47 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.checkerframework.common.subtyping.qual.Bottom;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class OfferActivity extends AppCompatActivity {
+
+public class OfferDetailsFragment extends Fragment {
     FirebaseFirestore firestoreDb;
     StorageReference storageReference;
     Object[] documentFieldsValues;
     Uri[] imagesUri;
     ViewPager2 viewPager;
-    RequestManager glide;
+    FragmentOfferDetailsBinding binding;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_offer);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    }
 
-        String brand = getIntent().getStringExtra("Brand");
-        String model = getIntent().getStringExtra("Model");
-        String yearOfProduction = getIntent().getStringExtra("Year of production");
-        String price = getIntent().getStringExtra("Price [PLN]");
-        Uri onlineImageUri = Uri.parse(getIntent().getStringExtra("Online image Uri"));
-        String pathToDocument = getIntent().getStringExtra("Path to chosen document");
-        String pathToDocumentFilesFolder = getIntent().getStringExtra("Path to chosen document files folder");
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        binding = FragmentOfferDetailsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        return view;
+    }
 
-        viewPager = findViewById(R.id.viewPager);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        String brand = getArguments().getString("Brand");
+        String model = getArguments().getString("Model");
+        String yearOfProduction = getArguments().getString("Year of production");
+        String price = getArguments().getString("Price [PLN]");
+        Uri onlineImageUri = Uri.parse(getArguments().getString("Online image Uri"));
+        String pathToDocument = getArguments().getString("Path to chosen document");
+        String pathToDocumentFilesFolder = getArguments().getString("Path to chosen document files folder");
+
+        viewPager = binding.viewPager;
 
 
         firestoreDb = FirebaseFirestore.getInstance();
@@ -91,9 +95,9 @@ public class OfferActivity extends AppCompatActivity {
                             imagesUri[finalI] = uri;
                             if (completedDownloads.get() == expectedDownloads) { // Sprawdź, czy pobrano wszystkie obrazy
                                 // Ustaw adapter ViewPager tylko po pobraniu wszystkich obrazów
-                                ViewPagerAdapter adapter = new ViewPagerAdapter(imagesUri, OfferActivity.this);
+                                ViewPagerAdapter adapter = new ViewPagerAdapter(imagesUri, getContext());
                                 viewPager.setAdapter(adapter);
-                                GridLayout gridLayout = findViewById(R.id.gridLayout);
+                                GridLayout gridLayout = binding.gridLayout;
 
                                 Map<String, String> map = new HashMap<>();
                                 map.put("Brand", brand);
@@ -116,7 +120,6 @@ public class OfferActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void generateTextViews(GridLayout gridLayout, Map<String, String> map) {
@@ -129,10 +132,10 @@ public class OfferActivity extends AppCompatActivity {
 
         for (int i = 0; i < 2 * map.size(); i++) {
             // Tworzenie nowego TextView
-            TextView textView = new TextView(this);
+            TextView textView = new TextView(getContext());
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             // Ustawienie parametrów tekstu
-            textView.setTextColor(ContextCompat.getColor(this, R.color.white)); // Kolor tekstu
+            textView.setTextColor(ContextCompat.getColor(getContext(), R.color.white)); // Kolor tekstu
 
             // Ustawienie marginesów
             int marginTop = 40;
@@ -164,6 +167,4 @@ public class OfferActivity extends AppCompatActivity {
 
         }
     }
-
-
 }

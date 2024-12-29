@@ -1,197 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainPageActivity">
+    tools:context=".ui.activities.MainPageActivity">
 
-    <View
-        android:id="@+id/bottomBar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/logoLightBlue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guidelineHor3"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <View
-        android:id="@+id/topBar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/logoLightBlue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/guidelineHor2"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewOffers"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBar"
-        app:layout_constraintVertical_bias="0.025" />
-
-    <ImageButton
-        android:id="@+id/buttonSearch"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/search"
-        android:background="@color/logoLightBlue"
-        app:layout_constraintStart_toStartOf="@id/guidelineVert1"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVert2"
-        app:layout_constraintTop_toTopOf="@id/guidelineHor1" />
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/bottom_app_bar_nav"
+        />
 
 
-    <ImageButton
-        android:id="@+id/buttonMenu"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/menu"
-        android:background="@color/logoLightBlue"
-        app:layout_constraintStart_toStartOf="@id/guidelineVert7"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVert8"
-        app:layout_constraintTop_toTopOf="@id/guidelineHor1" />
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:fabAlignmentMode="center"
+        app:fabAnchorMode="cradle"
+        app:fabCradleMargin="0dp"
+        app:fabCradleRoundedCornerRadius="0dp"
+        app:fabCradleVerticalOffset="0dp"
+        >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:background="@color/transparency"
+            android:elevation="0dp"
+            app:itemActiveIndicatorStyle="@style/Widget.App.BottomNavigationView.ActiveIndicator"
+            app:itemIconTint="@color/logoLightOrange"
+            app:itemTextColor="@color/logoLightOrange"
+            app:menu="@menu/bottom_app_bar_menu" />
 
 
-    <ImageButton
-        android:id="@+id/buttonLogo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/logo_w_png_1"
-        android:background="@color/logoLightBlue"
-        app:layout_constraintStart_toStartOf="@id/guidelineVert1"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVert2"
-        app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
-    <ImageButton
-        android:id="@+id/buttonBasket"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/basket"
-        android:background="@color/logoLightBlue"
-        app:layout_constraintStart_toStartOf="@id/guidelineVert3"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVert4"
-        app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
-
-    <ImageButton
-        android:id="@+id/buttonHeart"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/heart"
-        android:background="@color/logoLightBlue"
-        app:layout_constraintStart_toStartOf="@id/guidelineVert5"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVert6"
-        app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
-
-
-    <ImageButton
-        android:id="@+id/buttonUser"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:srcCompat="@drawable/user"
-        android:background="@color/logoLightBlue"
-        app:layout_constraintStart_toStartOf="@id/guidelineVert7"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVert8"
-        app:layout_constraintTop_toTopOf="@id/guidelineHor4" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVert1"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.09" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVert2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.155" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVert3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.32" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVert4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.385" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVert5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.615" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVert6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.68" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVert7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.845" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVert8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.91" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineHor1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineHor2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineHor3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.93" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineHor4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.948" />
+        app:layout_anchor="@id/bottom_app_bar"
+        app:srcCompat="@drawable/add_24px"
+        app:maxImageSize="48dp"
+        />
 
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

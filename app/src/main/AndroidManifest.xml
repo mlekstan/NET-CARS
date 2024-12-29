@@ -14,28 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AnimatedSplash.MySplash"
         tools:targetApi="31">
+
         <activity
-            android:name=".OfferActivity"
-            android:theme="@style/AppTheme.OfferPage"
-            android:exported="false" />
-        <activity
-            android:name=".AddCarActivity"
+            android:name=".ui.activities.AddCarActivity"
             android:exported="false"
             android:theme="@style/AppTheme.SignUpPage"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".HeartActivity"
-            android:theme="@style/AppTheme.HeartPage" />
-        <activity
-            android:name=".UserActivity"
-            android:theme="@style/AppTheme.UserPage" />
-        <activity
-            android:name=".SignUpActivity"
+            android:name=".ui.activities.SignUpActivity"
             android:exported="false"
             android:theme="@style/AppTheme.SignUpPage"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AnimatedSplash.MySplash">
             <intent-filter>
@@ -50,11 +41,9 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".MainPageActivity"
+            android:name=".ui.activities.MainPageActivity"
             android:theme="@style/AppTheme.MainPage" />
-        <activity
-            android:name=".BasketActivity"
-            android:theme="@style/AppTheme.BasketPage" />
+
     </application>
 
 </manifest>

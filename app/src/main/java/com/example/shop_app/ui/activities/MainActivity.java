@@ -1,6 +1,4 @@
-package com.example.shop_app;
-
-import static java.lang.Thread.*;
+package com.example.shop_app.ui.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -10,17 +8,10 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -28,30 +19,24 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.splashscreen.SplashScreen;
-import androidx.core.splashscreen.SplashScreenViewProvider;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.window.SplashScreenView;
 
 
+import com.example.shop_app.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private Button buttonSignIn, buttonSignUp;
@@ -299,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        Log.i("MainActivity", "I'm in onStop");
         super.onStop();
         orangeCircleSetOfAnimators.pause();
         lightBlueCircleSetOfAnimators.pause();
@@ -308,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart() {
+        Log.i("MainActivity", "I'm in onRestart");
         super.onRestart();
         orangeCircleSetOfAnimators.resume();
         lightBlueCircleSetOfAnimators.resume();

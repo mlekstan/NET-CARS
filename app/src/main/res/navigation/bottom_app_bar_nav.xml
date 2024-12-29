@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_app_bar_nav"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.shop_app.ui.fragments.FirstFragment"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_first" >
+        <action
+            android:id="@+id/action_home_to_addCarActivity"
+            app:destination="@id/addCarActivity" />
+        <action
+            android:id="@+id/action_home_to_offerDetailsFragment"
+            app:destination="@id/offerDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/account"
+        android:name="com.example.shop_app.ui.fragments.SecondFragment"
+        android:label="fragment_second"
+        tools:layout="@layout/fragment_second" >
+        <action
+            android:id="@+id/action_account_to_addCarActivity"
+            app:destination="@id/addCarActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/addCarActivity"
+        android:name="com.example.shop_app.ui.activities.AddCarActivity"
+        android:label="activity_add_car"
+        tools:layout="@layout/activity_add_car" />
+    <fragment
+        android:id="@+id/offerDetailsFragment"
+        android:name="com.example.shop_app.ui.fragments.OfferDetailsFragment"
+        android:label="fragment_offer_details"
+        tools:layout="@layout/fragment_offer_details" >
+        <action
+            android:id="@+id/action_offerDetailsFragment_to_home"
+            app:destination="@id/home" />
+    </fragment>
+</navigation>
