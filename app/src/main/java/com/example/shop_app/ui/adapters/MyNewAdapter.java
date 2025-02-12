@@ -31,7 +31,7 @@ public class MyNewAdapter extends RecyclerView.Adapter<MyNewAdapter.MyNewViewHol
     @NonNull
     @Override
     public MyNewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view =  LayoutInflater.from(context).inflate(R.layout.recycler_view_row, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_row, parent, false);
         MyNewViewHolder holder = new MyNewViewHolder(view, classImplementingInterface);
         return holder;
     }
@@ -39,8 +39,8 @@ public class MyNewAdapter extends RecyclerView.Adapter<MyNewAdapter.MyNewViewHol
     @Override
     public void onBindViewHolder(@NonNull MyNewViewHolder holder, int position) {
         holder.brandAndModel.setText(listOfBasicCarInfo.get(position).getBrand() + " " + listOfBasicCarInfo.get(position).getModel());
-        holder.yearOfProduction.setText(listOfBasicCarInfo.get(position).getYearOfProduction() + " yr.");
-        holder.price.setText(listOfBasicCarInfo.get(position).getPrice() + " PLN");
+        holder.yearOfProduction.setText("Year: " + listOfBasicCarInfo.get(position).getYearOfProduction() + " yr.");
+        holder.price.setText("Price: " + listOfBasicCarInfo.get(position).getPrice() + " PLN");
         Glide.with(context).load(listOfBasicCarInfo.get(position).getMainImageUri()).into(holder.imageView);
     }
 
@@ -51,7 +51,7 @@ public class MyNewAdapter extends RecyclerView.Adapter<MyNewAdapter.MyNewViewHol
 
     public static class MyNewViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView brandAndModel, price, yearOfProduction;
+        TextView brandAndModel, price, yearOfProduction, mileage;
 
         public MyNewViewHolder(@NonNull View itemView, MyNewRecyclerViewInterface classImplementingInterface) {
             super(itemView);
