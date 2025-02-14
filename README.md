@@ -17,6 +17,6 @@ Prototype application for viewing and creating car sales ads for Android systems
 ![Material Design 3](https://img.shields.io/badge/Material%20Design%203-757575?style=for-the-badge&logo=materialdesign&logoColor=white)
 
 ## Operation overview
-Link to demo video: https://www.dropbox.com/scl/fi/et79xdj9eyuvcm83ergur/NET-CARS_demo.mp4?rlkey=yggajzzefissnx9bok62i0qt4&st=uvrjkesd&dl=0
+Link to demo video: https://www.dropbox.com/scl/fi/4nn4a7607q5holhqfnq1s/NET-CARS_demo.mp4?rlkey=ob4qphx0hcgehtwj0qfarem99&e=1&st=om4x4ju9&dl=0
 
 
